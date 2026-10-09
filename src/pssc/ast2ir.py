@@ -1852,7 +1852,8 @@ class AstToIrTranslator:
         # Determine the constraint function name
         raw_name = constraint_block.getName() if hasattr(constraint_block, 'getName') else None
         if raw_name:
-            func_name = raw_name
+            # The parser represents a named constraint's identifier as ExprId.
+            func_name = raw_name.getId() if isinstance(raw_name, pss_ast.ExprId) else raw_name
         else:
             # Auto-generate a unique name based on position in owner's function list
             idx = sum(1 for f in owner.functions if f.metadata.get('_is_constraint'))
